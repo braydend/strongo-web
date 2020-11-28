@@ -53,13 +53,13 @@ const LoginModal: React.FC<Props> = ({ show, onClose }) => {
                 {hasErrors && <Alert variant='danger'>{[...Object.values(errors), error].join(' ')}</Alert>}
                 <Form>
                     <Form.Group>
-                        <Form.Label>
+                        <Form.Label htmlFor='email'>
                             Email
                         </Form.Label>
                         <Form.Control id='email' type="email" placeholder="enter@your.email" value={values.email} onChange={handleChange} />
                     </Form.Group>
                     <Form.Group>
-                        <Form.Label>
+                        <Form.Label htmlFor='password'>
                             Password
                         </Form.Label>
                         <Form.Control id='password' type="password" placeholder="Secret sauce" value={values.password} onChange={handleChange} />

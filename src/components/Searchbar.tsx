@@ -16,9 +16,9 @@ const Searchbar = ({ onChange }: SearchbarProps) => {
     return (
         <InputGroup className="mb-3 mt-3">
             <InputGroup.Prepend>
-                <InputGroup.Text id="basic-addon1">Search for a movie:</InputGroup.Text>
+                <InputGroup.Text id="basic-addon1">Search for an exercise:</InputGroup.Text>
             </InputGroup.Prepend>
-            <FormControl value={query} onChange={handleChange} />
+            <FormControl value={query} onChange={handleChange} placeholder="Search" />
         </InputGroup>
     );
 };

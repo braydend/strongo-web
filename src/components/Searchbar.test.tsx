@@ -1,23 +1,32 @@
-import React from 'react';
-import { shallow } from 'enzyme';
+import { fireEvent, render, screen } from '@testing-library/react';
+import React, { ComponentProps } from 'react';
 import Searchbar from './Searchbar';
 
-describe('<Searchbar />', () => {
-    test('renders correctly', () => {
-        const wrapper = shallow(<Searchbar onChange={() => {}} />);
+type SearchbarProps = ComponentProps<typeof Searchbar>;
 
-        expect(wrapper.length).toBe(1);
-        expect(wrapper.text()).toContain('Search');
+describe('<Searchbar />', () => {
+    const setUp = (customProps?: Partial<SearchbarProps>) => {
+        const defaultProps: SearchbarProps = {
+            onChange: jest.fn(),
+        };
+        const props = { ...defaultProps, ...customProps };
+        render(<Searchbar {...props} />)
+    };
+
+    test('renders correctly', async () => {
+        setUp();
+
+        expect(await screen.findByText('Search for an exercise:')).toBeTruthy();
     });
 
-    test('onChange callback is fired when query is updated', () => {
+    test('onChange callback is fired when query is updated', async () => {
         const callback = jest.fn();
-        const wrapper = shallow(<Searchbar onChange={callback} />);
-        const input = wrapper.find('FormControl');
+        setUp({ onChange: callback });
+        const input = await screen.findByPlaceholderText('Search');
     
-        input.simulate('change', { target: { value: 'first Search'}});
-        input.simulate('change', { target: { value: 'second Search'}});
+        fireEvent.change(input, { target: { value: 'first Search'}});
+        fireEvent.change(input, { target: { value: 'second Search'}});
 
-        expect(callback.mock.calls.length).toBe(2);
+        expect(callback).toHaveBeenCalledTimes(2);
     })
 });
