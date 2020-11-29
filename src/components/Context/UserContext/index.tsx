@@ -1,4 +1,4 @@
-import React, { createContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import app from "firebase";
 import firebase from "../../../utils/firebase";
 
@@ -20,7 +20,7 @@ const initialValue: ContextType = {
 
 const UserContext = createContext<ContextType>(initialValue);
 
-const UserProvider: React.FC = ({ children }) => {
+export const UserProvider: React.FC = ({ children }) => {
   const [user, setUser] = useState<app.User>();
   const [isBusy, setBusy] = useState(false);
 
@@ -57,6 +57,6 @@ const UserProvider: React.FC = ({ children }) => {
   );
 };
 
-export { UserProvider };
+export const useAuth = () => useContext(UserContext);
 
 export default UserContext;

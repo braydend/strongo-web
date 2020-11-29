@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "../components/Context/UserContext";
+import { makeAuthenticatedRequest } from "../utils/api";
 
 export type Exercise = {
   id: number;
@@ -10,30 +11,24 @@ const useExercises = () => {
   const { user } = useAuth();
   if (!user) throw Error("No user is authenticated");
 
-  const [data, setData] = useState<Exercise[]>();
+  const [data, setData] = useState<Exercise[]>([]);
   const [error, setError] = useState<string>();
-  const host = process.env.REACT_APP_SERVER_HOST || "";
+  const [loading, setLoading] = useState(true);
 
-  const fetchAllExercises = async () => {
-    const authToken = await user.getIdToken();
-    const headers = new Headers({
-      Authorization: `Bearer ${authToken}` || "",
-    });
-    const response = await (
-      await fetch(`${host}/exercises`, { headers, mode: "cors" })
-    ).json();
-    return response.data;
-  };
+  const fetchAllExercises = async () =>
+    makeAuthenticatedRequest(user, "/exercises");
 
   useEffect(() => {
     try {
       (async () => setData(await fetchAllExercises()))();
     } catch (e) {
       setError(e.message);
+    } finally {
+      setLoading(false);
     }
   }, [user]);
 
-  return { data, loading: data === undefined, error };
+  return { data, loading, error };
 };
 
 export { useExercises };
