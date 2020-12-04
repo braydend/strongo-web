@@ -1,7 +1,6 @@
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import app from "firebase";
 import firebase from "../../../utils/firebase";
-import { useAuth } from "../../../hooks/useAuth";
 
 type ContextType = {
   user: app.User | undefined;
@@ -22,8 +21,20 @@ const initialValue: ContextType = {
 const UserContext = createContext<ContextType>(initialValue);
 
 const UserProvider: React.FC = ({ children }) => {
-  const [user, setUser] = useAuth();
+  const [user, setUser] = useState<app.User>();
   const [isBusy, setBusy] = useState(false);
+
+  useEffect(() => {
+    const unsubscribe = firebase.auth.onAuthStateChanged((user) => {
+      if (user) {
+        setUser(user);
+      } else {
+        setUser(undefined);
+      }
+    });
+
+    return () => unsubscribe();
+  });
 
   const handleLogout = async () => {
     setBusy(true);
@@ -33,7 +44,13 @@ const UserProvider: React.FC = ({ children }) => {
 
   return (
     <UserContext.Provider
-      value={{ user, setUser, isBusy, logout: handleLogout, setBusy }}
+      value={{
+        user,
+        setUser,
+        isBusy,
+        logout: handleLogout,
+        setBusy,
+      }}
     >
       {children}
     </UserContext.Provider>

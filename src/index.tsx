@@ -4,11 +4,19 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { UserProvider } from "./components/Context/UserContext";
+import styled from "styled-components";
+
+const Container = styled.div`
+  width: 100%;
+  height: 100%;
+`;
 
 ReactDOM.render(
   <React.StrictMode>
     <UserProvider>
-      <App />
+      <Container>
+        <App />
+      </Container>
     </UserProvider>
   </React.StrictMode>,
   document.getElementById("root")
