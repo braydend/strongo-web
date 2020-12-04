@@ -1,7 +1,6 @@
 import firebase from '../../utils/firebase';
 import React, { useState } from 'react';
 import { Form, Button, Alert, Spinner } from 'react-bootstrap';
-import styled from 'styled-components';
 import { useFormValidation } from '../../hooks/useFormValidation';
 import validateLogin from '../../utils/validators/validateLogin';
 import { UserProvider } from '../Context/UserContext';

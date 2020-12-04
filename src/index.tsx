@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-import { UserProvider } from "./utils/UserContext";
+import { UserProvider } from "./components/Context/UserContext";
 
 ReactDOM.render(
   <React.StrictMode>
