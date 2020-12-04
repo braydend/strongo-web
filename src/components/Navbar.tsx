@@ -1,16 +1,15 @@
 import React, { useContext } from "react";
-import { Button, Nav, Navbar as BSNavbar, Spinner } from "react-bootstrap";
+import { Button, Navbar as BSNavbar, Spinner } from "react-bootstrap";
+import styled from "styled-components";
 import UserContext from "./Context/UserContext";
-import firebase from "../utils/firebase";
+
+const UserSection = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
 
 const Navbar: React.FC = () => {
-  const { user, isBusy, setBusy } = useContext(UserContext);
-
-  const handleLogout = async () => {
-    setBusy(true);
-    await firebase.logout();
-    setBusy(false);
-  };
+  const { logout, user, isBusy } = useContext(UserContext);
 
   return (
     <BSNavbar bg="light" expand="lg">
@@ -19,18 +18,15 @@ const Navbar: React.FC = () => {
       </BSNavbar.Brand>
       <BSNavbar.Toggle aria-controls="basic-navbar-nav" />
       <BSNavbar.Collapse id="basic-navbar-nav">
-        <Nav className="mr-auto" />
-        <BSNavbar.Text className="mr-sm-2">
-          Signed in as: {user?.displayName}
-        </BSNavbar.Text>
-        <Button
-          variant="outline-danger"
-          className="mr-sm-2"
-          onClick={handleLogout}
-        >
-          Logout
-        </Button>
-        {isBusy && <Spinner variant="danger" animation="border" />}
+        <UserSection>
+          <BSNavbar.Text className="mr-sm-2">
+            Signed in as: {user?.displayName}
+          </BSNavbar.Text>
+          <Button variant="outline-danger" className="mr-sm-2" onClick={logout}>
+            Logout
+          </Button>
+        </UserSection>
+        {isBusy && <Spinner animation="border" />}
       </BSNavbar.Collapse>
     </BSNavbar>
   );
