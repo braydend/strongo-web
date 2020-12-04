@@ -1,15 +1,19 @@
 import React from "react";
 import "./App.css";
-import Layout from "./components/Layout";
-import { UserProvider } from "./utils/UserContext";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { Exercises } from "./components/Pages/Exercises";
 
 function App() {
   return (
-    <UserProvider>
-      <div className="App">
-        <Layout />
-      </div>
-    </UserProvider>
+    <div className="App">
+      <BrowserRouter>
+        <Switch>
+          <Route path="/">
+            <Exercises />
+          </Route>
+        </Switch>
+      </BrowserRouter>
+    </div>
   );
 }
 
