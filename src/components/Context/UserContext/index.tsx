@@ -1,4 +1,4 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import app from "firebase";
 import firebase from "../../../utils/firebase";
 
@@ -57,6 +57,12 @@ const UserProvider: React.FC = ({ children }) => {
   );
 };
 
-export { UserProvider };
+const useAuth = () => {
+  const { ...data } = useContext(UserContext);
+
+  return { ...data };
+};
+
+export { UserProvider, useAuth };
 
 export default UserContext;

@@ -1,30 +1,46 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from "react";
+import { useAuth } from "../components/Context/UserContext";
 
-type Exercise = {
-    id: number,
-    name: string,
+export type Exercise = {
+  id: number;
+  name: string;
 };
 
 const useExercises = () => {
-    const [data, setData] = useState<Exercise[]>();
-    const [error, setError] = useState<string>();
-    const host = process.env.REACT_APP_SERVER_HOST || '';
+  const { user } = useAuth();
+  const [data, setData] = useState<Exercise[]>();
+  const [error, setError] = useState<string>();
+  const host = process.env.REACT_APP_SERVER_HOST || "";
 
-    const fetchAllExercises = async () => {
-        const response = await (await fetch(`${host}/exercises`)).json();
+  const fetchAllExercises = useCallback(
+    async (token: unknown) => {
+      const response = await (
+        await fetch(`${host}/exercises`, {
+          headers: new Headers({
+            Authorization: `Bearer ${token}`,
+          }),
+        })
+      ).json();
 
-        return response.data;
-    };
+      return response.data;
+    },
+    [host]
+  );
 
-    useEffect(() => {
-        try{
-            (async () => setData(await fetchAllExercises()))();
-        }catch (e){
-            setError(e.message);
-        }
-    }, []);
+  const fetchData = useCallback(async () => {
+    try {
+      const token = await user?.getIdToken();
+      setData(await fetchAllExercises(token));
+    } catch (e) {
+      setError(e.message);
+    }
+  }, [user, fetchAllExercises]);
 
-    return ({ data, loading: data === undefined, error });
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
+
+  return { data, loading: data === undefined, error };
 };
 
 export { useExercises };
