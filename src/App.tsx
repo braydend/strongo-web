@@ -1,8 +1,7 @@
-import React from 'react';
-import './App.css';
-import Layout from './components/Layout';
-import { UserProvider } from './utils/UserContext';
-
+import React from "react";
+import "./App.css";
+import Layout from "./components/Layout";
+import { UserProvider } from "./utils/UserContext";
 
 function App() {
   return (
