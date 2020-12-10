@@ -6,7 +6,7 @@ export const useFormValidation = <T>(
   action: () => void
 ) => {
   const [values, setValues] = useState(initialState);
-  const [errors, setErrors] = useState({});
+  const [errors, setErrors] = useState<{ [x: string]: string }>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleChange = <T>(event: any, key?: string, value?: T) => {

@@ -1,6 +1,5 @@
 import React, { useContext } from "react";
-import { BrowserRouter, Route } from "react-router-dom";
-import Switch from "react-bootstrap/esm/Switch";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
 import { ExercisePage } from "./components/Pages/ExercisePage";
 import UserContext from "./components/Context/UserContext";
 import LoginPage from "./components/Pages/Login";
