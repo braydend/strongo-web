@@ -48,15 +48,15 @@ const TestComponent: React.FC<Props> = ({ onSubmit, validator }) => {
       <button onClick={handleSubmit}>Submit</button>
       {hasErrors && (
         <div data-testid="errors">
-          {Object.values(errors).map((e) => (
-            <p>{e}</p>
+          {Object.values(errors).map((e, i) => (
+            <p key={`${e}-${i}`}>{e}</p>
           ))}
         </div>
       )}
       {hasValues && (
         <div data-testid="values">
-          {Object.values(values).map((v) => (
-            <p>{v}</p>
+          {Object.values(values).map((v, i) => (
+            <p key={`${v}-${i}`}>{v}</p>
           ))}
         </div>
       )}
