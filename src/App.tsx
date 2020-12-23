@@ -1,15 +1,17 @@
-import React from "react";
-import "./App.css";
-import Layout from "./components/Layout";
-import { UserProvider } from "./utils/UserContext";
+import React, { useContext } from "react";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { ExercisePage } from "./components/Pages/ExercisePage";
+import UserContext from "./components/Context/UserContext";
+import LoginPage from "./components/Pages/Login";
 
 function App() {
+  const { user } = useContext(UserContext);
   return (
-    <UserProvider>
-      <div className="App">
-        <Layout />
-      </div>
-    </UserProvider>
+    <BrowserRouter>
+      <Switch>
+        <Route path="/">{user ? <ExercisePage /> : <LoginPage />}</Route>
+      </Switch>
+    </BrowserRouter>
   );
 }
 

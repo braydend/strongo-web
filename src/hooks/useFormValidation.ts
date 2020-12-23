@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 export const useFormValidation = <T>(
   initialState: T,
@@ -6,23 +6,8 @@ export const useFormValidation = <T>(
   action: () => void
 ) => {
   const [values, setValues] = useState(initialState);
-  const [errors, setErrors] = useState({});
+  const [errors, setErrors] = useState<{ [x: string]: string }>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
-
-  useEffect(() => {
-    if (isSubmitting) {
-      const noErrors = Object.keys(errors).length === 0;
-
-      if (noErrors) {
-        action();
-        setValues(initialState);
-        setIsSubmitting(false);
-      } else {
-        // toast(Object.values(errors).join(" "));
-        setIsSubmitting(false);
-      }
-    }
-  }, [errors]);
 
   const handleChange = <T>(event: any, key?: string, value?: T) => {
     if (key && value) {
@@ -42,9 +27,16 @@ export const useFormValidation = <T>(
   };
 
   const handleSubmit = () => {
-    const validationErrors = validate(values);
-    setErrors(validationErrors);
     setIsSubmitting(true);
+    const validationErrors = validate(values);
+    const noErrors = Object.keys(validationErrors).length === 0;
+
+    if (noErrors) {
+      action();
+    }
+
+    setErrors(validationErrors);
+    setIsSubmitting(false);
   };
 
   return {

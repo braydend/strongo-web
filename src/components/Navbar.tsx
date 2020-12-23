@@ -1,21 +1,15 @@
 import React, { useContext } from "react";
-import { Button, Nav, Navbar as BSNavbar, Spinner } from "react-bootstrap";
-import UserContext from "../utils/UserContext";
-import firebase from "../utils/firebase";
+import { Button, Navbar as BSNavbar, Spinner } from "react-bootstrap";
+import styled from "styled-components";
+import UserContext from "./Context/UserContext";
 
-enum Modal {
-  Login,
-  Register,
-}
+const UserSection = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
 
 const Navbar: React.FC = () => {
-  const { user, isBusy, showModal, setBusy } = useContext(UserContext);
-
-  const handleLogout = async () => {
-    setBusy(true);
-    await firebase.logout();
-    setBusy(false);
-  };
+  const { logout, user, isBusy } = useContext(UserContext);
 
   return (
     <BSNavbar bg="light" expand="lg">
@@ -24,40 +18,15 @@ const Navbar: React.FC = () => {
       </BSNavbar.Brand>
       <BSNavbar.Toggle aria-controls="basic-navbar-nav" />
       <BSNavbar.Collapse id="basic-navbar-nav">
-        <Nav className="mr-auto" />
-        {user ? (
-          <>
-            <BSNavbar.Text className="mr-sm-2">
-              Signed in as: {user.displayName}
-            </BSNavbar.Text>
-            <Button
-              variant="outline-danger"
-              className="mr-sm-2"
-              disabled={isBusy}
-              onClick={handleLogout}
-            >
-              Logout
-            </Button>
-            {isBusy && <Spinner variant="danger" animation="border" />}
-          </>
-        ) : (
-          <>
-            <Button
-              variant="outline-warning"
-              className="mr-sm-2"
-              onClick={() => showModal(Modal.Register)}
-            >
-              Register
-            </Button>
-            <Button
-              variant="outline-success"
-              className="mr-sm-2"
-              onClick={() => showModal(Modal.Login)}
-            >
-              Login
-            </Button>
-          </>
-        )}
+        <UserSection>
+          <BSNavbar.Text className="mr-sm-2">
+            Signed in as: {user?.displayName}
+          </BSNavbar.Text>
+          <Button variant="outline-danger" className="mr-sm-2" onClick={logout}>
+            Logout
+          </Button>
+        </UserSection>
+        {isBusy && <Spinner animation="border" />}
       </BSNavbar.Collapse>
     </BSNavbar>
   );
