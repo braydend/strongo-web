@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "../components/Context/UserContext";
-import { makeAuthenticatedRequest } from "../utils/api";
+import { ApiRequest, makeAuthenticatedRequest } from "../utils/api";
 
 export type Exercise = {
   id: number;
   name: string;
 };
 
-const useExercises = () => {
+const useExercises = (): ApiRequest<Exercise[]> => {
   const { user } = useAuth();
   if (!user) throw Error("No user is authenticated");
 

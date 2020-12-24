@@ -1,50 +1,49 @@
 import React from "react";
-import { Card, Spinner } from "react-bootstrap";
+import { Card } from "react-bootstrap";
 import styled from "styled-components";
 import { Exercise } from "../../hooks/useExercises";
-import { useSets } from "../../hooks/useSets";
+import { useSets, Set } from "../../hooks/useSets";
+import Loader from "../Loader";
 import { ResponsiveGrid } from "../styled";
+
+const ExerciseSets: React.FC<{ data: Set[] }> = ({ data }) => {
+  const hasSets = data.length > 0;
+
+  if (!hasSets)
+    return <strong>You haven't recorded any sets. Start today!</strong>;
+
+  return (
+    <ul>
+      {data.map((s) => (
+        <li key={s.ID}>
+          {s.Reps} - {s.Weight}
+        </li>
+      ))}
+    </ul>
+  );
+};
 
 const ExerciseCard: React.FC<{ exercise: Exercise }> = ({
   exercise: { id, name },
-}) => {
-  const { data, loading, error } = useSets(id);
-
-  if (error) console.error(error);
-
-  const hasSets = data.length > 0;
-
-  return (
-    <Card>
-      <Card.Header>{name}</Card.Header>
-      <Card.Body>
-        {loading ? (
-          <Spinner animation="border" />
-        ) : hasSets ? (
-          <ul>
-            {data.map((s) => (
-              <li key={s.ID}>
-                {s.Reps} - {s.Weight}
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <strong>You haven't recorded any {name} sets. Start today!</strong>
-        )}
-      </Card.Body>
-    </Card>
-  );
-};
+}) => (
+  <Card>
+    <Card.Header>{name}</Card.Header>
+    <Card.Body>
+      {/* eslint-disable-next-line react-hooks/rules-of-hooks */}
+      <Loader<Set[]> fetch={() => useSets(id)} Success={ExerciseSets} />
+    </Card.Body>
+  </Card>
+);
 
 const CardContainer = styled(ResponsiveGrid)`
   padding: 2rem 0;
   grid-gap: 1rem;
 `;
 
-const ExerciseCards: React.FC<{ exercises: Exercise[] }> = ({ exercises }) => {
+const ExerciseCards: React.FC<{ data: Exercise[] }> = ({ data }) => {
   return (
     <CardContainer>
-      {exercises.map((e) => (
+      {data.map((e) => (
         <ExerciseCard exercise={e} key={e.id} />
       ))}
     </CardContainer>

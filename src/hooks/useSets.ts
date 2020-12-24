@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "../components/Context/UserContext";
-import { makeAuthenticatedRequest } from "../utils/api";
+import { ApiRequest, makeAuthenticatedRequest } from "../utils/api";
 
 export type Set = {
   ID: number;
@@ -11,7 +11,7 @@ export type Set = {
   CreatedAt: string;
 };
 
-const useSets = (exerciseId: number) => {
+const useSets = (exerciseId: number): ApiRequest<Set[]> => {
   const { user } = useAuth();
   if (!user) throw Error("No user is authenticated");
 

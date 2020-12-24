@@ -1,5 +1,11 @@
 import app from "firebase";
 
+export type ApiRequest<T> = {
+  error?: string;
+  loading: boolean;
+  data: T;
+};
+
 export const makeRequest = async (path: string, headers?: Headers) => {
   const host = process.env.REACT_APP_SERVER_HOST || "";
   const response = await (
