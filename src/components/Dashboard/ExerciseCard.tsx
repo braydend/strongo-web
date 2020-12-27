@@ -24,13 +24,13 @@ const ExerciseSets: React.FC<{ data: Set[] }> = ({ data }) => {
 };
 
 const ExerciseCard: React.FC<{ exercise: Exercise }> = ({
-  exercise: { id, name },
+  exercise: { ID, Name },
 }) => (
   <Card>
-    <Card.Header>{name}</Card.Header>
+    <Card.Header>{Name}</Card.Header>
     <Card.Body>
       {/* eslint-disable-next-line react-hooks/rules-of-hooks */}
-      <Loader<Set[]> fetch={() => useSets(id)} Success={ExerciseSets} />
+      <Loader<Set[]> fetch={() => useSets(ID)} Success={ExerciseSets} />
     </Card.Body>
   </Card>
 );
@@ -44,7 +44,7 @@ const ExerciseCards: React.FC<{ data: Exercise[] }> = ({ data }) => {
   return (
     <CardContainer>
       {data.map((e) => (
-        <ExerciseCard exercise={e} key={e.id} />
+        <ExerciseCard exercise={e} key={e.ID} />
       ))}
     </CardContainer>
   );

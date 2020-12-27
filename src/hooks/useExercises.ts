@@ -3,8 +3,8 @@ import { useAuth } from "../components/Context/UserContext";
 import { ApiRequest, makeAuthenticatedRequest } from "../utils/api";
 
 export type Exercise = {
-  id: number;
-  name: string;
+  ID: number;
+  Name: string;
 };
 
 const useExercises = (): ApiRequest<Exercise[]> => {
